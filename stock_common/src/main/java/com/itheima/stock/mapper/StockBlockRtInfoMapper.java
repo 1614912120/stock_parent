@@ -1,6 +1,11 @@
 package com.itheima.stock.mapper;
 
+import com.itheima.stock.pojo.domain.StockBlockDomain;
 import com.itheima.stock.pojo.entity.StockBlockRtInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
+import java.util.List;
 
 /**
 * @author 123
@@ -22,4 +27,5 @@ public interface StockBlockRtInfoMapper {
 
     int updateByPrimaryKey(StockBlockRtInfo record);
 
+    List<StockBlockDomain> sectorAllLimit(@Param("lastDate") Date lastDate);
 }

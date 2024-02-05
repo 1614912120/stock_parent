@@ -5,6 +5,8 @@ import com.itheima.stock.vo.req.LoginReqVo;
 import com.itheima.stock.vo.resp.LoginRespVo;
 import com.itheima.stock.vo.resp.R;
 
+import java.util.Map;
+
 /**
  * @author by itheima
  * @Date 2022/6/29
@@ -20,4 +22,7 @@ public interface UserService {
     SysUser getUserByUserName(String userName);
 
     R<LoginRespVo> login(LoginReqVo vo);
+
+    R<Map> getCaptchaCode();
+
 }
