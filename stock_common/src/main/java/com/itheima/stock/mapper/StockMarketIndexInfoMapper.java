@@ -4,6 +4,7 @@ import com.itheima.stock.pojo.domain.InnerMarketDomain;
 import com.itheima.stock.pojo.entity.StockMarketIndexInfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -31,4 +32,7 @@ public interface StockMarketIndexInfoMapper {
     List<InnerMarketDomain> getMarketInfo(@Param("curDates") Date curDates, @Param("mCode") List<String> mCode);
 
     List<Map> getStockTradeVol(@Param("markedIds") List<String> markedIds, @Param("startTime") Date startTime4T, @Param("endTime") Date endTime4T);
+
+
+    void insertBatch(@Param("infos") ArrayList<StockMarketIndexInfo> list);
 }

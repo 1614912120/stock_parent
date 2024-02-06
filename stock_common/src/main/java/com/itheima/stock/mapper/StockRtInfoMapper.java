@@ -3,6 +3,7 @@ package com.itheima.stock.mapper;
 import com.itheima.stock.pojo.domain.Stock4EvrDayDomain;
 import com.itheima.stock.pojo.domain.Stock4MinuteDomain;
 import com.itheima.stock.pojo.domain.StockUpdownDomain;
+import com.itheima.stock.pojo.entity.StockBlockRtInfo;
 import com.itheima.stock.pojo.entity.StockRtInfo;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,4 +48,11 @@ public interface StockRtInfoMapper {
     List<String> getStockInfo4EvrDayPart1(@Param("stockCode") String stockCode, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     List<Stock4EvrDayDomain> getStockInfo4EvrDayPart2(@Param("stockCode") String stockCode, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("timeList1") List<String> timeList1);
+    /**
+     * 批量插入功能
+     * @param stockRtInfoList
+     */
+    int insertBatch(List<StockRtInfo> stockRtInfoList);
+
+
 }

@@ -28,4 +28,6 @@ public interface StockBlockRtInfoMapper {
     int updateByPrimaryKey(StockBlockRtInfo record);
 
     List<StockBlockDomain> sectorAllLimit(@Param("lastDate") Date lastDate);
+
+    int insertBatchBlock(@Param("stockRtInfoList") List<StockBlockRtInfo> stockRtInfoList);
 }

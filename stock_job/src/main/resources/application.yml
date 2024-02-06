@@ -1,6 +1,6 @@
-# web定义
+# 配置服务端口
 server:
-  port: 8091
+  port: 8092
 spring:
   # 配置mysql数据源
   datasource:
@@ -24,18 +24,16 @@ spring:
     username: root
     password: 123456
     virtual-host: /
-  # 配置mybatis
-  #激活其他配置文件
   profiles:
     active: cache,stock
-
+# 配置mybatis
 mybatis:
-  type-aliases-package: com.itheima.stock.pojo #类型别名
-  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.itheima.stock.pojo.* # 配置实体类扫描，取别名
+  mapper-locations: classpath:mapper/*.xml # 配置扫描的xml的位置
   configuration:
-    map-underscore-to-camel-case: true # 开启驼峰映射
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  # pagehelper配置
+    map-underscore-to-camel-case: true # 开启驼峰映射 table:user_name-->entity:userName
+
+# pagehelper配置
 pagehelper:
   helper-dialect: mysql #指定分页数据库类型（方言）
   reasonable: true #合理查询超过最大页，则查询最后一页

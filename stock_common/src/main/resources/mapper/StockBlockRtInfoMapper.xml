@@ -59,6 +59,8 @@
         ,#{tradeAmount,jdbcType=BIGINT},#{tradeVolume,jdbcType=DECIMAL},#{curTime,jdbcType=TIMESTAMP}
         )
     </insert>
+
+
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.itheima.stock.pojo.entity.StockBlockRtInfo" useGeneratedKeys="true">
         insert into stock_block_rt_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -83,6 +85,20 @@
                 <if test="tradeVolume != null">#{tradeVolume,jdbcType=DECIMAL},</if>
                 <if test="curTime != null">#{curTime,jdbcType=TIMESTAMP},</if>
         </trim>
+    </insert>
+    <insert id="insertBatchBlock" >
+        insert into stock_block_rt_info
+        ( id,label,block_name
+        ,company_num,avg_price,updown_rate
+        ,trade_amount,trade_volume,cur_time
+        )
+        values
+        <foreach collection="stockRtInfoList"  item="list" separator=",">
+            (#{list.id,jdbcType=BIGINT},#{list.label,jdbcType=VARCHAR},#{list.blockName,jdbcType=VARCHAR}
+            ,#{list.companyNum,jdbcType=INTEGER},#{list.avgPrice,jdbcType=DECIMAL},#{list.updownRate,jdbcType=DECIMAL}
+            ,#{list.tradeAmount,jdbcType=BIGINT},#{list.tradeVolume,jdbcType=DECIMAL},#{list.curTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.itheima.stock.pojo.entity.StockBlockRtInfo">
         update stock_block_rt_info

@@ -3,6 +3,8 @@ package com.itheima.stock.pojo.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -10,6 +12,7 @@ import lombok.Data;
  * @TableName stock_rt_info
  */
 @Data
+@Builder
 public class StockRtInfo implements Serializable {
     /**
      * 主键字段（无业务意义）

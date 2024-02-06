@@ -2,6 +2,7 @@ package com.itheima.stock.service.impl;
 
 import com.alibaba.excel.EasyExcel;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.benmanes.caffeine.cache.Cache;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itheima.stock.mapper.StockBlockRtInfoMapper;
@@ -44,21 +45,26 @@ public class StockServiceImpl implements StockService {
 
     @Autowired
     private StockInfoConfig stockInfoConfig;
-
+    @Autowired
+    private Cache<String,Object> caffeineCache;
     @Autowired
     private StockMarketIndexInfoMapper stockMarketIndexInfoMapper;
     @Override
     public R<List<InnerMarketDomain>> getInnerMarketInfo() {
-        //获取股票最新交易点
-        DateTime curDate = DateTimeUtil.getLastDate4Stock(DateTime.now());
-        Date curDates = curDate.toDate();
-        //TODO mock测试数据，后期数据通过第三方接口动态获取实时数据 可删除
-        curDates=DateTime.parse("2021-12-28 09:31:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        //获取大盘集合
-        List<String> mCode = stockInfoConfig.getInner();
-        //调用mapper查询
-        List<InnerMarketDomain> data = stockMarketIndexInfoMapper.getMarketInfo(curDates,mCode);
-        return R.ok(data);
+        //从缓存中加载数据，如果不存在，则走补偿策略获取数据，并存入本地缓存
+        R<List<InnerMarketDomain>> result = (R<List<InnerMarketDomain>>)caffeineCache.get("innerMarketKey", key -> {
+            //获取股票最新交易点
+            DateTime curDate = DateTimeUtil.getLastDate4Stock(DateTime.now());
+            Date curDates = curDate.toDate();
+            //TODO mock测试数据，后期数据通过第三方接口动态获取实时数据 可删除
+            curDates = DateTime.parse("2021-12-28 09:31:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            //获取大盘集合
+            List<String> mCode = stockInfoConfig.getInner();
+            //调用mapper查询
+            List<InnerMarketDomain> data = stockMarketIndexInfoMapper.getMarketInfo(curDates, mCode);
+            return R.ok(data);
+        });
+        return result;
     }
     @Autowired
     private StockBlockRtInfoMapper stockBlockRtInfoMapper;
